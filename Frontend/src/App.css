@@ -1,0 +1,13 @@
+* {
+  font-family: "Poppins";
+}
+body {
+  overflow-y: auto;
+  padding-top: 80px;
+}
+.navv img {
+  width: 250px;
+}
+.navv {
+  background-color: #1c1b3b;
+}
