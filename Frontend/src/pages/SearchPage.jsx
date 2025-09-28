@@ -1,8 +1,66 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "@fontsource/poppins/500.css";
 import Navbar from "../components/Navbar";
+import programData from "../utils/programData";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Searchpage() {
+  const navigate = useNavigate();
+  const [stream, setStream] = useState("");
+  const [degree, setDegree] = useState("");
+  const [error, setError] = useState("");
+  const [searchData, setSearchData] = useState({
+    program_id: "",
+    year: 0,
+    sem: 0,
+    batch: "",
+  });
+
+  const handleChange = (evt) => {
+    const name = evt.target.name;
+    const value = evt.target.value;
+    setSearchData((currentData) => {
+      const newValue =
+        name === "year" || name === "sem" ? parseInt(value, 10) || 0 : value;
+      return { ...currentData, [name]: newValue };
+    });
+  };
+
+  const timeout = () => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  };
+
+  useEffect(timeout, [error]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const { program_id, year, sem, batch } = searchData;
+
+    if (!program_id || !year || !sem || !batch) {
+      setError("⚠️ Please select all fields before searching.");
+      return;
+    }
+    navigate("/user/coursePage", { state: searchData });
+  };
+
+  const selectedData =
+    programData[stream] && programData[stream][degree]
+      ? programData[stream][degree]
+      : null;
+
+  const availablePrograms = selectedData ? selectedData.programs : [];
+  const availableYears = selectedData ? selectedData.years : [];
+  const availableSemesters =
+    selectedData && searchData.year
+      ? selectedData.semesters[availableYears[searchData.year - 1]]
+      : [];
+  const availableBatches = selectedData ? selectedData.batches : [];
+
   return (
     <div>
       <Navbar />
@@ -22,14 +80,19 @@ export default function Searchpage() {
                 />
               </div>
               <div className="col-auto">
-                <button type="submit" class="btn btn-danger rounded-3 pt-1">
+                <button type="submit" className="btn btn-danger rounded-3 pt-1">
                   search
                 </button>
               </div>
             </div>
           </form>
+          {error && (
+            <div className="alert alert-danger text-center" role="alert">
+              {error}
+            </div>
+          )}
           <div className="row mt-4 align-items-center">
-            <form action="">
+            <form onSubmit={handleSubmit}>
               <div className=" col-md-offset-3 col-md-6 mx-auto">
                 <div className="mb-2  ">
                   <label htmlFor="Stream" className="form-label">
@@ -41,6 +104,17 @@ export default function Searchpage() {
                       type="radio"
                       name="stream"
                       id="Regular"
+                      value="Regular"
+                      onChange={() => {
+                        setStream("Regular");
+                        setDegree("");
+                        setSearchData({
+                          program_id: "",
+                          year: 0,
+                          sem: 0,
+                          batch: "",
+                        });
+                      }}
                     />
                     <label className="form-label ms-2 " htmlFor="Regular">
                       Regular
@@ -50,102 +124,131 @@ export default function Searchpage() {
                       type="radio"
                       name="stream"
                       id="selffiance"
+                      value="self-financed"
+                      onChange={() => {
+                        setStream("self-financed");
+                        setDegree("");
+                        setSearchData({
+                          program_id: "",
+                          year: 0,
+                          sem: 0,
+                          batch: "",
+                        });
+                      }}
                     />
                     <label className=" form-label ms-2 " htmlFor="selffiance">
-                      Self Fiance
+                      Self Financed
                     </label>
                   </div>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="Degree" class="form-label">
+                  <label htmlFor="Degree" className="form-label">
                     Select the Degree
                   </label>
                   <select
                     id="Degree"
-                    class="form-select custom-select bg-black bg-opacity-25 rounded-4"
+                    className="form-select custom-select bg-black bg-opacity-25 rounded-4"
                     aria-label="Default select example"
+                    value={degree}
+                    onChange={(evt) => setDegree(evt.target.value)}
+                    disabled={!stream}
                   >
-                    <option className="text-secondary" selected>
-                      Open the select Menu
-                    </option>
-                    <option value="1">UG</option>
-                    <option value="2">PG</option>
-                    <option value="3">MPhil</option>
-                    <option value="4">Ph.D</option>
+                    <option value="">Open the select Menu</option>
+                    <option value="UG">UG</option>
+                    <option value="PG">PG</option>
+                    <option value="MPhil">MPhil</option>
+                    <option value="Ph.D">Ph.D</option>
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="program" class="form-label">
+                  <label htmlFor="program" className="form-label">
                     Select the Program
                   </label>
                   <select
                     id="program"
-                    class="form-select custom-select bg-black bg-opacity-25 rounded-4"
+                    className="form-select custom-select bg-black bg-opacity-25 rounded-4"
                     aria-label="Default select example"
+                    disabled={!stream || !degree}
+                    name="program_id"
+                    value={searchData.program_id}
+                    onChange={handleChange}
                   >
-                    <option className="text-secondary" selected>
-                      Open the select Menu
-                    </option>
-                    <option value="1">MCA</option>
-                    <option value="2">BCA</option>
-                    <option value="3">Msc.Data Science</option>
-                    <option value="4">Msc.Computer Science</option>
+                    <option value="">Open the select Menu</option>
+                    {availablePrograms.map((prog) => (
+                      <option key={prog.id} value={prog.id}>
+                        {prog.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="year" class="form-label">
+                  <label htmlFor="year" className="form-label">
                     Select the Year of the Program
                   </label>
                   <select
                     id="year"
-                    class="form-select custom-select bg-black bg-opacity-25 rounded-4"
+                    className="form-select custom-select bg-black bg-opacity-25 rounded-4"
                     aria-label="Default select example"
+                    disabled={!stream || !degree}
+                    name="year"
+                    value={searchData.year}
+                    onChange={handleChange}
                   >
-                    <option className="text-secondary" selected>
-                      Open the select Menu
-                    </option>
-                    <option value="1">1st Year</option>
-                    <option value="2">2nd year</option>
-                    <option value="3">3rd year</option>
+                    <option value="">Open the select Menu</option>
+                    {availableYears.map((yearLabel, index) => (
+                      <option key={index} value={index + 1}>
+                        {yearLabel}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="year" class="form-label">
+                  <label htmlFor="year" className="form-label">
                     Select the Semester
                   </label>
                   <select
                     id="sem"
-                    class="form-select custom-select bg-black bg-opacity-25 rounded-4"
+                    className="form-select custom-select bg-black bg-opacity-25 rounded-4"
                     aria-label="Default select example"
+                    disabled={!stream || !degree}
+                    name="sem"
+                    value={searchData.sem}
+                    onChange={handleChange}
                   >
-                    <option className="text-secondary" selected>
-                      Open the select Menu
-                    </option>
-                    <option value="1">1st Semester</option>
-                    <option value="2">2nd Semester</option>
-                    <option value="3">3rd semester</option>
-                    <option value="4">4th Semester</option>
+                    <option value="">Open the select Menu</option>
+                    {availableSemesters.map((semLabel, index) => (
+                      <option key={index} value={index + 1}>
+                        {semLabel}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="year" class="form-label">
+                  <label htmlFor="year" className="form-label">
                     Select the Batch
                   </label>
                   <select
                     id="batch"
-                    class="form-select custom-select bg-black bg-opacity-25 rounded-4"
+                    className="form-select custom-select bg-black bg-opacity-25 rounded-4"
                     aria-label="Default select example"
+                    disabled={!stream || !degree}
+                    name="batch"
+                    value={searchData.batch}
+                    onChange={handleChange}
                   >
-                    <option className="text-secondary" selected>
-                      Open the select Menu
-                    </option>
-                    <option value="1">2024-2026</option>
-                    <option value="2">2025-2027</option>
-                    <option value="3">2024-2027</option>
+                    <option value="">Open the select Menu</option>
+                    {availableBatches.map((batch, index) => (
+                      <option key={index} value={batch}>
+                        {batch}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="mb-3 text-center">
-                  <button type="submit" class="btn btn-danger rounded-3 pt-1">
+                  <button
+                    type="submit"
+                    className="btn btn-danger rounded-3 pt-1"
+                  >
                     search
                   </button>
                 </div>

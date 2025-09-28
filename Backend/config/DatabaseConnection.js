@@ -4,7 +4,7 @@ const db = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "root",
-  database: "Ematerial_portal",
+  database: "ematerial_portal",
 });
 
 (async () => {

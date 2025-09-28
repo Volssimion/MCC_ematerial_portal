@@ -1,8 +1,41 @@
 import Navbar from "../components/Navbar";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "@fontsource/poppins/500.css";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function CoursePage() {
+  const location = useLocation();
+  const { program_id, year, sem, batch } = location.state || {};
+  const [course, setCourse] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  console.log(program_id, year, sem, batch);
+
+  useEffect(() => {
+    if (program_id && year && sem && batch) {
+      setLoading(true);
+
+      axios
+        .get("http://localhost:5000/user/getcourse", {
+          params: {
+            program_id,
+            year,
+            sem,
+            batch,
+          },
+        })
+        .then((res) => {
+          setCourse(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError("Failed to fetch courses.");
+          setLoading(false);
+        });
+    }
+  }, [program_id, year, sem, batch]);
+
   return (
     <div>
       <Navbar />
@@ -14,70 +47,25 @@ export default function CoursePage() {
           <h2>Course</h2>
           <div className="row mt-2 align-items-center">
             <div className="offset-col-md-2 col-md-8 mx-auto text-start ">
+              {loading && (
+                <p className="text-center text-primary">Loading courses...</p>
+              )}
+              {error && <p className="text-danger">{error}</p>}
+              {!loading && !error && course.length === 0 && (
+                <p className="text-center text-danger mt-5  fs-5">
+                  No courses found for the selected criteria.
+                </p>
+              )}
               <ul className="mt-3 overflow-auto " style={{ maxHeight: "65vh" }}>
-                <li
-                  className="fs-5 p-2 mb-3"
-                  style={{
-                    color: "#78091E",
-                    cursor: "pointer",
-                  }}
-                >
-                  Data Structure and Algorithm Laboratory (MCA900)
-                </li>
-                <li
-                  className="fs-5 p-2 mb-3"
-                  style={{
-                    color: "#78091E",
-                    cursor: "pointer",
-                  }}
-                >
-                  Data Structure and Algorithm Laboratory (MCA900)
-                </li>
-                <li
-                  className="fs-5 p-2 mb-3"
-                  style={{
-                    color: "#78091E",
-                    cursor: "pointer",
-                  }}
-                >
-                  Data Structure and Algorithm Laboratory (MCA900)
-                </li>
-                <li
-                  className="fs-5 p-2 mb-3"
-                  style={{
-                    color: "#78091E",
-                    cursor: "pointer",
-                  }}
-                >
-                  Data Structure and Algorithm Laboratory (MCA900)
-                </li>
-                <li
-                  className="fs-5 p-2 mb-3"
-                  style={{
-                    color: "#78091E",
-                    cursor: "pointer",
-                  }}
-                >
-                  Data Structure and Algorithm Laboratory (MCA900)
-                </li>
-                <li
-                  className="fs-5 p-2 mb-3"
-                  style={{
-                    color: "#78091E",
-                    cursor: "pointer",
-                  }}
-                >
-                  Data Structure and Algorithm Laboratory (MCA900)
-                </li>
-                <li
-                  className="fs-5 p-2 mb-3"
-                  style={{
-                    color: "#78091E",
-                    cursor: "pointer",
-                  }}
-                >
-                  Data Structure and Algorithm Laboratory (MCA900)
-                </li>
+                {course.map((c) => (
+                  <li
+                    className="fs-5 p-2 mb-3"
+                    style={{ color: "#78091E", cursor: "pointer" }}
+                    key={c.course_id}
+                  >
+                    {c.course_title} ({c.course_id})
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

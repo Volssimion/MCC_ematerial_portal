@@ -10,11 +10,22 @@ import ViewCourse from "./pages/ViewCoursePage";
 import ViewMaterial from "./pages/ViewMaterialPage";
 import CoursePage from "./pages/CoursePage";
 import Staff from "./pages/StaffPage";
+import ErrorPage from "./pages/ErrorPage";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 function App() {
   return (
     <div>
-      <MaterialForm />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/user/searchPage" element={<Searchpage />} />
+          <Route path="/user/coursePage" element={<CoursePage />} />
+          <Route path="/user/resultpage" element={<Resultpage />} />
+
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
