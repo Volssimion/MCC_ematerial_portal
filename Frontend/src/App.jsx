@@ -19,10 +19,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/user/searchPage" element={<Searchpage />} />
-          <Route path="/user/coursePage" element={<CoursePage />} />
-          <Route path="/user/resultpage" element={<Resultpage />} />
-
+          <Route path="/searchPage" element={<Searchpage />} />
+          <Route path="/coursePage" element={<CoursePage />} />
+          <Route path="/resultPage" element={<Resultpage />} />
+          <Route path="/staffPage" element={<Staff />} />
+          <Route path="/materialformPage" element={<MaterialForm />} />
+          <Route path="/materialformPage" element={<MaterialEdit />} />
+          <Route path="/courseformPage" element={<Courseform />} />
+          <Route path="/courseEditPage" element={<CourseEdit />} />
+          <Route path="/materialPage" element={<ViewMaterial />} />
+          <Route path="/coursePage" element={<ViewCourse />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>

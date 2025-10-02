@@ -45,7 +45,7 @@ export default function Searchpage() {
       setError("⚠️ Please select all fields before searching.");
       return;
     }
-    navigate("/user/coursePage", { state: searchData });
+    navigate("/coursePage", { state: searchData });
   };
 
   const selectedData =

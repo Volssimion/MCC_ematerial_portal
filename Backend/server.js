@@ -31,6 +31,23 @@ app.get("/user/getcourse", async (req, res) => {
     res.status(500).json({ error: "Database query failed" });
   }
 });
+app.get("/user/getmaterials/:courseID", async (req, res) => {
+  try {
+    const { courseID } = req.params;
+
+    if (!courseID) {
+      return res.status(400).json({ error: "Missing courseID parameter" });
+    }
+
+    const sql = `SELECT * FROM material WHERE course_id = ? ORDER BY created_at DESC`;
+
+    const [rows] = await db.query(sql, [courseID]);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
 
 app.listen(port, (err) => {
   console.log(`Server is running at port ${port}`);
