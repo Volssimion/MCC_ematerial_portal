@@ -45,6 +45,7 @@ export default function Searchpage() {
       setError("⚠️ Please select all fields before searching.");
       return;
     }
+
     navigate("/coursePage", { state: searchData });
   };
 
@@ -95,9 +96,7 @@ export default function Searchpage() {
             <form onSubmit={handleSubmit}>
               <div className=" col-md-offset-3 col-md-6 mx-auto">
                 <div className="mb-2  ">
-                  <label htmlFor="Stream" className="form-label">
-                    Select the Stream
-                  </label>
+                  <label className="form-label">Select the Stream</label>
                   <div>
                     <input
                       className="form-check-input bg-black bg-opacity-25"
@@ -196,14 +195,14 @@ export default function Searchpage() {
                   >
                     <option value="">Open the select Menu</option>
                     {availableYears.map((yearLabel, index) => (
-                      <option key={index} value={index + 1}>
+                      <option key={index} value={yearLabel}>
                         {yearLabel}
                       </option>
                     ))}
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="year" className="form-label">
+                  <label htmlFor="sem" className="form-label">
                     Select the Semester
                   </label>
                   <select
@@ -217,14 +216,14 @@ export default function Searchpage() {
                   >
                     <option value="">Open the select Menu</option>
                     {availableSemesters.map((semLabel, index) => (
-                      <option key={index} value={index + 1}>
+                      <option key={index} value={semLabel}>
                         {semLabel}
                       </option>
                     ))}
                   </select>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="year" className="form-label">
+                  <label htmlFor="batch" className="form-label">
                     Select the Batch
                   </label>
                   <select

@@ -16,7 +16,7 @@ export default function CoursePage() {
       setLoading(true);
 
       axios
-        .get("http://localhost:5000/user/getcourse", {
+        .get("http://localhost:5000/student/getcourse", {
           params: {
             program_id,
             year,

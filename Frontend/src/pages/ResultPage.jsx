@@ -15,7 +15,7 @@ export default function Resultpage() {
       setLoading(true);
 
       axios
-        .get(`http://localhost:5000/user/getmaterials/${courseID}`)
+        .get(`http://localhost:5000/student/getmaterials/${courseID}`)
         .then((res) => {
           setMaterials(res.data);
           setLoading(false);

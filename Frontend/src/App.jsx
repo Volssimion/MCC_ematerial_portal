@@ -24,11 +24,11 @@ function App() {
           <Route path="/resultPage" element={<Resultpage />} />
           <Route path="/staffPage" element={<Staff />} />
           <Route path="/materialformPage" element={<MaterialForm />} />
-          <Route path="/materialformPage" element={<MaterialEdit />} />
+          <Route path="/materialEditPage" element={<MaterialEdit />} />
           <Route path="/courseformPage" element={<Courseform />} />
           <Route path="/courseEditPage" element={<CourseEdit />} />
-          <Route path="/materialPage" element={<ViewMaterial />} />
-          <Route path="/coursePage" element={<ViewCourse />} />
+          <Route path="/viewmaterialPage" element={<ViewMaterial />} />
+          <Route path="/viewcoursePage" element={<ViewCourse />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
