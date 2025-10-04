@@ -1,8 +1,8 @@
 const { viewCourse } = require("../services/staffService");
 
-async function viewAllCourseByID(req, res) {
+async function fetchAllCourseByID(req, res) {
   try {
-    const { user_id } = req.params;
+    const user_id = req.params.user_id;
 
     if (!user_id) {
       return res.status(400).json({ error: "Missing UserID parameter" });
@@ -15,4 +15,4 @@ async function viewAllCourseByID(req, res) {
   }
 }
 
-module.exports = viewAllCourseByID;
+module.exports = fetchAllCourseByID;

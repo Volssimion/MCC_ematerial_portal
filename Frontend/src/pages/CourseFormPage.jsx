@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import programData from "../utils/programData";
+import Swal from "sweetalert2";
 
 export default function Courseform() {
   const [stream, setStream] = useState("");
   const [degree, setDegree] = useState("");
-  const [error, setError] = useState("");
   const [courseData, setCourseData] = useState({
     course_id: "",
     course_title: "",
@@ -27,17 +27,6 @@ export default function Courseform() {
     });
   };
 
-  const timeout = () => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError("");
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  };
-
-  useEffect(timeout, [error]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -45,7 +34,13 @@ export default function Courseform() {
       courseData;
 
     if (!course_id || !course_title || !program_id || !year || !sem || !batch) {
-      setError("⚠️ Please select all fields before Submitting.");
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete form",
+        text: "⚠️ Please fill all required fields before submitting.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
       return;
     }
     axios
@@ -53,10 +48,32 @@ export default function Courseform() {
       .then((res) => {
         console.log("Course Created:", res.data);
         console.log(courseData);
+        Swal.fire({
+          icon: "success",
+          title: "Created Successful!",
+          text: "Your Course has been Created successfully.",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        setCourseData({
+          course_id: "",
+          course_title: "",
+          user_id: 2401722037046,
+          program_id: "",
+          year: 0,
+          sem: 0,
+          batch: "",
+        });
       })
       .catch((err) => {
         console.error(err);
-        setError("Failed to create course.");
+        Swal.fire({
+          icon: "error",
+          title: "ERROR",
+          text: "Something went wrong while creating the Course.",
+          showConfirmButton: true,
+          confirmButtonColor: "#d33",
+        });
       });
   };
 
@@ -82,11 +99,6 @@ export default function Courseform() {
           style={{ backgroundColor: "#D2EAC6", minHeight: "100vh" }}
         >
           <h5>Course Form</h5>
-          {error && (
-            <div className="alert alert-danger text-center" role="alert">
-              {error}
-            </div>
-          )}
           <form onSubmit={handleSubmit}>
             <div className="row mt-4 align-items-center">
               <div className="col-md-offset-3 col-md-6 mx-auto">

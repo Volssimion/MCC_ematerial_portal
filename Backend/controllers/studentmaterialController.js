@@ -2,7 +2,7 @@ const { getMaterialsByCourse } = require("../services/studentService");
 
 async function getMaterials(req, res) {
   try {
-    const { courseID } = req.params;
+    const courseID = req.params.courseID;
 
     if (!courseID) {
       return res.status(400).json({ error: "Missing courseID parameter" });

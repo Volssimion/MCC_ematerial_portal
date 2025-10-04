@@ -1,1 +1,29 @@
+# Node modules
 node_modules/
+
+# Environment files
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Uploads folder (user materials)
+uploads/
+uploads/*
+
+# Allow empty uploads folder in repo
+!uploads/.gitkeep
+
+# Build and cache
+dist/
+coverage/
+
+# System and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

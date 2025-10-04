@@ -13,7 +13,7 @@ export default function CourseEdit() {
           <div className="row mt-4 align-items-center">
             <div className=" col-md-offset-3 col-md-6 mx-auto">
               <div className="mb-3">
-                <label htmlFor="courseID" class="form-label">
+                <label htmlFor="courseID" className="form-label">
                   Course ID
                 </label>
                 <input
@@ -26,7 +26,7 @@ export default function CourseEdit() {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="programID" class="form-label">
+                <label htmlFor="programID" className="form-label">
                   Program ID
                 </label>
                 <input
@@ -38,7 +38,7 @@ export default function CourseEdit() {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="CourseTitle" class="form-label">
+                <label htmlFor="CourseTitle" className="form-label">
                   Course Title
                 </label>
                 <input
@@ -50,34 +50,30 @@ export default function CourseEdit() {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="year" class="form-label">
+                <label htmlFor="year" className="form-label">
                   Select the Year of the Program
                 </label>
                 <select
                   id="year"
-                  class="form-select custom-select bg-black bg-opacity-25 rounded-4"
+                  className="form-select custom-select bg-black bg-opacity-25 rounded-4"
                   aria-label="Default select example"
                 >
-                  <option className="text-secondary" selected>
-                    Open the select Menu
-                  </option>
+                  <option value="">Open the select Menu</option>
                   <option value="1">1st Year</option>
                   <option value="2">2nd year</option>
                   <option value="3">3rd year</option>
                 </select>
               </div>
               <div className="mb-3">
-                <label htmlFor="year" class="form-label">
+                <label htmlFor="sem" className="form-label">
                   Select the Semester
                 </label>
                 <select
                   id="sem"
-                  class="form-select custom-select bg-black bg-opacity-25 rounded-4"
+                  className="form-select custom-select bg-black bg-opacity-25 rounded-4"
                   aria-label="Default select example"
                 >
-                  <option className="text-secondary" selected>
-                    Open the select Menu
-                  </option>
+                  <option value="">Open the select Menu</option>
                   <option value="1">1st Semester</option>
                   <option value="2">2nd Semester</option>
                   <option value="3">3rd semester</option>
@@ -85,24 +81,22 @@ export default function CourseEdit() {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="year" class="form-label">
+                <label htmlFor="batch" className="form-label">
                   Select the Batch
                 </label>
                 <select
                   id="batch"
-                  class="form-select custom-select bg-black bg-opacity-25 rounded-4"
+                  className="form-select custom-select bg-black bg-opacity-25 rounded-4"
                   aria-label="Default select example"
                 >
-                  <option className="text-secondary" selected>
-                    Open the select Menu
-                  </option>
+                  <option value="">Open the select Menu</option>
                   <option value="1">2024-2026</option>
                   <option value="2">2025-2027</option>
                   <option value="3">2024-2027</option>
                 </select>
               </div>
               <div className="mb-3 text-center">
-                <button type="submit" class="btn btn-danger rounded-3 pt-1">
+                <button type="submit" className="btn btn-danger rounded-3 pt-1">
                   Submit
                 </button>
               </div>

@@ -2,12 +2,13 @@ import Navbar from "../components/Navbar";
 import programData from "../utils/programData";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Searchpage() {
   const navigate = useNavigate();
   const [stream, setStream] = useState("");
   const [degree, setDegree] = useState("");
-  const [error, setError] = useState("");
+
   const [searchData, setSearchData] = useState({
     program_id: "",
     year: 0,
@@ -25,24 +26,19 @@ export default function Searchpage() {
     });
   };
 
-  const timeout = () => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError("");
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  };
-
-  useEffect(timeout, [error]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const { program_id, year, sem, batch } = searchData;
 
     if (!program_id || !year || !sem || !batch) {
-      setError("⚠️ Please select all fields before searching.");
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete form",
+        text: "⚠️ Please fill all required fields before submitting.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
       return;
     }
 
@@ -87,11 +83,6 @@ export default function Searchpage() {
               </div>
             </div>
           </form>
-          {error && (
-            <div className="alert alert-danger text-center" role="alert">
-              {error}
-            </div>
-          )}
           <div className="row mt-4 align-items-center">
             <form onSubmit={handleSubmit}>
               <div className=" col-md-offset-3 col-md-6 mx-auto">
