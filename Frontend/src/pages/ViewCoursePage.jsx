@@ -30,7 +30,7 @@ export default function ViewCourse() {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Delete Course?",
-      text: "This will also delete all related materials automatically.",
+      text: "This will also delete all related materials and uploaded files automatically.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -50,7 +50,7 @@ export default function ViewCourse() {
 
             Swal.fire({
               title: "Deleted!",
-              text: "Course and related materials have been deleted.",
+              text: "Course, related materials, and uploaded files have been deleted successfully.",
               icon: "success",
               confirmButtonColor: "#3085d6",
               customClass: { popup: "rounded-4 p-3" },

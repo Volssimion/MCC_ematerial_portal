@@ -17,7 +17,16 @@ export default function Resultpage() {
       axios
         .get(`http://localhost:5000/student/getmaterials/${courseID}`)
         .then((res) => {
-          setMaterials(res.data);
+          const data = Array.isArray(res.data) ? res.data : [res.data];
+
+          const updatedData = data.map((m) => {
+            if (m.material_doc) {
+              m.material_doc = `http://localhost:5000/uploads/${m.material_doc}`;
+            }
+            return m;
+          });
+
+          setMaterials(updatedData);
           setLoading(false);
         })
         .catch((err) => {

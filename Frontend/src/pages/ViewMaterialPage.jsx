@@ -11,50 +11,50 @@ export default function ViewMaterial() {
   const [loading, setLoading] = useState(true);
   const [material, setMaterial] = useState([]);
 
+  // Fetch materials
   useEffect(() => {
     if (courseID) {
       setLoading(true);
-
       axios
         .get(`http://localhost:5000/staff/getMaterialById/${courseID}`)
         .then((res) => {
           setMaterial(res.data);
           setLoading(false);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
           setError("Failed to fetch materials.");
           setLoading(false);
         });
     }
   }, [courseID]);
 
+  // Delete material
   const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:5000/staff/deleteMaterialById/${id}`)
-      .then(() => {
-        // Remove deleted material from UI
-        setMaterial((prev) => prev.filter((m) => m.material_id !== id));
-
-        // Show SweetAlert2 success message
-        Swal.fire({
-          title: "Deleted!",
-          text: "Material has been deleted successfully ✅",
-          icon: "success",
-          confirmButtonColor: "#3085d6",
-          customClass: { popup: "rounded-4 p-3" },
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        Swal.fire({
-          title: "Error",
-          text: "Failed to delete the material.",
-          icon: "error",
-          confirmButtonColor: "#d33",
-          customClass: { popup: "rounded-4 p-3" },
-        });
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This will permanently delete the material!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:5000/staff/deleteMaterialById/${id}`)
+          .then(() => {
+            setMaterial((prev) => prev.filter((m) => m.material_id !== id));
+            Swal.fire(
+              "Deleted!",
+              "Material has been deleted successfully ✅",
+              "success"
+            );
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Failed to delete the material.", "error");
+          });
+      }
+    });
   };
 
   return (
@@ -66,6 +66,7 @@ export default function ViewMaterial() {
           style={{ backgroundColor: "#D2EAC6" }}
         >
           <h5>Your Material</h5>
+
           <div className="row mt-4 align-items-center">
             <div className="offset-col-md-1 col-md-10 mx-auto text-start">
               <h5 className="fs-6 fs-md-1" style={{ color: "#78091E" }}>
@@ -79,7 +80,7 @@ export default function ViewMaterial() {
               {error && <p className="text-danger">{error}</p>}
               {!loading && !error && material.length === 0 && (
                 <p className="text-center text-danger mt-5 fs-5">
-                  {`No Material found for ${courseID}`}
+                  No Material found for {courseID}
                 </p>
               )}
               <ul
@@ -103,7 +104,13 @@ export default function ViewMaterial() {
                           className="btn btn-sm btn-primary rounded-5 me-3"
                           style={{ width: 70, fontSize: 13 }}
                         >
-                          Edit
+                          <Link
+                            style={{ textDecoration: "none", color: "#ffffff" }}
+                            to="/materialEditPage"
+                            state={{ materialID: e.material_id }}
+                          >
+                            Edit
+                          </Link>
                         </button>
                         <button
                           className="btn btn-sm btn-danger rounded-5"

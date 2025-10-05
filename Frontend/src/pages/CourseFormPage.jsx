@@ -47,7 +47,6 @@ export default function Courseform() {
       .post("http://localhost:5000/staff/createCourse", courseData)
       .then((res) => {
         console.log("Course Created:", res.data);
-        console.log(courseData);
         Swal.fire({
           icon: "success",
           title: "Created Successful!",

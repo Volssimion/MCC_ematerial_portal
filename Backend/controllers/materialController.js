@@ -10,9 +10,7 @@ async function uploadMaterial(req, res) {
 
     // File uploaded
     if (req.file && material_type === "doc") {
-      material_doc = `${req.protocol}://${req.get("host")}/uploads/${
-        req.file.filename
-      }`;
+      material_doc = req.file.filename; // store only filename
     }
 
     // Link type
@@ -41,6 +39,7 @@ async function uploadMaterial(req, res) {
       material_doc,
       material_url,
     });
+
     res.status(201).json({ message: "Material uploaded successfully", result });
   } catch (err) {
     console.error(err);
@@ -50,4 +49,4 @@ async function uploadMaterial(req, res) {
   }
 }
 
-module.exports = { uploadMaterial };
+module.exports = uploadMaterial;
