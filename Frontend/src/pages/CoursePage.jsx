@@ -50,35 +50,53 @@ export default function CoursePage() {
                 <p className="text-center text-primary">Loading courses...</p>
               )}
               {error && <p className="text-danger">{error}</p>}
-              {!loading && !error && course.length === 0 && (
-                <p className="text-center text-danger mt-5  fs-5">
+              {!loading && !error && course.length === 0 ? (
+                <p className="text-center text-danger mt-5 fs-5">
                   No courses found for the selected criteria.
                 </p>
-              )}
-              <ul className="mt-3 overflow-auto " style={{ maxHeight: "65vh" }}>
-                {course.map((c) => {
-                  const courseDetails = {
-                    courseID: c.course_id,
-                    courseTitle: c.course_title,
-                  };
+              ) : (
+                <>
+                  <div
+                    className="offset-col-md-12 p-2 sticky-top text-center border border-white"
+                    style={{
+                      fontWeight: 600,
+                      fontSize: "18px",
+                      color: "#ffff",
+                      backgroundColor: "#303030",
+                    }}
+                  >
+                    Courses
+                  </div>
 
-                  return (
-                    <li
-                      className="fs-5 p-2 mb-3"
-                      style={{ color: "#78091E", cursor: "pointer" }}
-                      key={c.course_id}
-                    >
-                      <Link
-                        style={{ textDecoration: "none", color: "#78091E" }}
-                        to="/resultPage"
-                        state={courseDetails}
-                      >
-                        {c.course_title} ({c.course_id})
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+                  <ul
+                    className="mt-3 overflow-auto"
+                    style={{ maxHeight: "65vh" }}
+                  >
+                    {course.map((c) => {
+                      const courseDetails = {
+                        courseID: c.course_id,
+                        courseTitle: c.course_title,
+                      };
+
+                      return (
+                        <li
+                          className="fs-5 p-2 mb-3"
+                          style={{ color: "#78091E", cursor: "pointer" }}
+                          key={c.course_id}
+                        >
+                          <Link
+                            style={{ textDecoration: "none", color: "#78091E" }}
+                            to="/resultPage"
+                            state={courseDetails}
+                          >
+                            {c.course_title} ({c.course_id})
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              )}
             </div>
           </div>
         </div>

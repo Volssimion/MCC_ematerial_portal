@@ -23,7 +23,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Max file size 10MB
 const upload = multer({
   storage,
   fileFilter,

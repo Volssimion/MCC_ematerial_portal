@@ -72,7 +72,12 @@ export default function ViewCourse() {
           className="card vh-100 m-3 p-4 rounded-4"
           style={{ backgroundColor: "#D2EAC6" }}
         >
-          <h5>Your Course</h5>
+          <h5
+            className="fs-5"
+            style={{ fontWeight: 600, fontSize: "18px", color: "#000000" }}
+          >
+            Created Course
+          </h5>
 
           <div className="row mt-4 align-items-center">
             <div className="offset-col-md-1 col-md-10 mx-auto text-start">
@@ -91,6 +96,43 @@ export default function ViewCourse() {
                 className="mt-3 overflow-auto"
                 style={{ listStyleType: "none", maxHeight: "65vh" }}
               >
+                <li className="p-3 sticky-top ">
+                  <div className="row">
+                    <div
+                      className="col-md-2 p-2  text-center  border border-white"
+                      style={{
+                        fontWeight: 600,
+                        fontSize: "18px",
+                        color: "#ffff",
+                        backgroundColor: "#303030",
+                      }}
+                    >
+                      Date
+                    </div>
+                    <div
+                      className="col-md-6  p-2  text-center  border border-white"
+                      style={{
+                        fontWeight: 600,
+                        fontSize: "18px",
+                        color: "#ffff",
+                        backgroundColor: "#303030",
+                      }}
+                    >
+                      Course Title
+                    </div>
+                    <div
+                      className="col-md-4 p-2  text-center  border border-white"
+                      style={{
+                        fontWeight: 600,
+                        fontSize: "18px",
+                        color: "#ffff",
+                        backgroundColor: "#303030",
+                      }}
+                    >
+                      Operations
+                    </div>
+                  </div>
+                </li>
                 {course.map((c) => {
                   const materialDetails = {
                     userID: c.user_id,

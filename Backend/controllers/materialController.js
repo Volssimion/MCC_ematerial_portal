@@ -8,17 +8,14 @@ async function uploadMaterial(req, res) {
     let material_doc = null;
     let material_url = null;
 
-    // File uploaded
     if (req.file && material_type === "doc") {
-      material_doc = req.file.filename; // store only filename
+      material_doc = req.file.filename;
     }
 
-    // Link type
     if (material_type === "link") {
       material_url = req.body.material_url;
     }
 
-    // Validate
     if (
       !material_id ||
       !material_title ||

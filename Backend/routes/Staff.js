@@ -16,11 +16,13 @@ const {
   fetchCourse,
   updateCourse,
 } = require("../controllers/staffUpdateCourseById");
+const fetchAllMaterials = require("../controllers/staffViewAllMaterialController");
 
 router.get("/getMaterialById/:courseID", fetchMaterialByID);
 router.get("/getAllCourses/:user_id", fetchAllCourseByID);
 router.get("/fetchMaterial/:materialID", fetchMaterialById);
 router.get("/fetchCourse/:courseID", fetchCourse);
+router.get("/fetchAllmaterials/:user_id", fetchAllMaterials);
 
 router.post("/createCourse", createCourseController);
 router.post("/uploadMaterial", upload.single("material_doc"), uploadMaterial);

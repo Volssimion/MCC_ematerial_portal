@@ -1,34 +1,31 @@
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
-export default function ViewMaterial() {
-  const location = useLocation();
-  const { courseID, courseTitle } = location.state;
+export default function ViewAllmaterials() {
+  const user_id = 2401722037046;
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [material, setMaterial] = useState([]);
 
-  // Fetch materials
   useEffect(() => {
-    if (courseID) {
+    if (user_id) {
       setLoading(true);
+
       axios
-        .get(`http://localhost:5000/staff/getMaterialById/${courseID}`)
+        .get(`http://localhost:5000/staff/fetchAllMaterials/${user_id}`)
         .then((res) => {
           setMaterial(res.data);
           setLoading(false);
         })
-        .catch(() => {
-          setError("Failed to fetch materials.");
+        .catch((err) => {
+          setError("Failed to fetch Materials.");
           setLoading(false);
         });
     }
-  }, [courseID]);
-
-  // Delete material
+  }, [user_id]);
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -65,13 +62,10 @@ export default function ViewMaterial() {
           className="card vh-100 m-3 p-4 rounded-4"
           style={{ backgroundColor: "#D2EAC6" }}
         >
-          <h5>Your Material</h5>
+          <h5>Recently Created Material</h5>
 
           <div className="row mt-4 align-items-center">
             <div className="offset-col-md-1 col-md-10 mx-auto text-start">
-              <h5 className="fs-5 fs-md-1" style={{ color: "#78091E" }}>
-                {courseTitle} ({courseID})
-              </h5>
               {loading && (
                 <p className="text-center text-primary">
                   Loading your materials...
@@ -80,7 +74,7 @@ export default function ViewMaterial() {
               {error && <p className="text-danger">{error}</p>}
               {!loading && !error && material.length === 0 ? (
                 <p className="text-center text-danger mt-5 fs-5">
-                  No Material found for {courseID}
+                  No Material found for {user_id}
                 </p>
               ) : (
                 <ul
@@ -109,10 +103,10 @@ export default function ViewMaterial() {
                           backgroundColor: "#303030",
                         }}
                       >
-                        Course Title
+                        Material Title
                       </div>
                       <div
-                        className="col-md-3 p-2 text-center  border border-white"
+                        className="col-md-3 p-2  text-center  border border-white"
                         style={{
                           fontWeight: 600,
                           fontSize: "18px",

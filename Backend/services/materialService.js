@@ -35,6 +35,13 @@ async function getMaterialById(materialID) {
   return rows.length ? rows[0] : null;
 }
 
+async function getAllMaterialByUserId(user_id) {
+  const [rows] = await db.query("SELECT * FROM material WHERE user_id = ?", [
+    user_id,
+  ]);
+  return rows;
+}
+
 async function updateMaterial(materialID, updatedData) {
   const sql = `
     UPDATE material 
@@ -74,6 +81,7 @@ async function deleteMaterial(id, returnBeforeDelete = false) {
 module.exports = {
   createMaterial,
   getMaterialById,
+  getAllMaterialByUserId,
   updateMaterial,
   deleteMaterial,
 };
