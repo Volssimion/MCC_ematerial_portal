@@ -1,11 +1,12 @@
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export default function ViewCourse() {
-  const user_id = 2401722037046;
+  const location = useLocation();
+  const user_id = location.state;
   const [course, setCourse] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

@@ -7,15 +7,20 @@ async function uploadMaterial(req, res) {
 
     let material_doc = null;
     let material_url = null;
+    let original_name = null;
 
+    // Handle document upload
     if (req.file && material_type === "doc") {
-      material_doc = req.file.filename;
+      material_doc = req.file.filename; // server-stored filename
+      original_name = req.body.original_name || req.file.originalname; // original user filename
     }
 
+    // Handle link
     if (material_type === "link") {
       material_url = req.body.material_url;
     }
 
+    // Validate required fields
     if (
       !material_id ||
       !material_title ||
@@ -34,6 +39,7 @@ async function uploadMaterial(req, res) {
       course_id,
       material_type,
       material_doc,
+      original_name,
       material_url,
     });
 

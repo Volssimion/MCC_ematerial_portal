@@ -1,5 +1,6 @@
 const db = require("../config/DatabaseConnection");
 
+// CREATE MATERIAL
 async function createMaterial(materialData) {
   const sql = `
     INSERT INTO material (
@@ -9,8 +10,9 @@ async function createMaterial(materialData) {
       course_id,
       material_type,
       material_doc,
+      original_name,
       material_url
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const values = [
@@ -19,7 +21,8 @@ async function createMaterial(materialData) {
     materialData.user_id,
     materialData.course_id,
     materialData.material_type,
-    materialData.material_doc || null,
+    materialData.material_doc || null, // stored filename
+    materialData.original_name || null, // original filename
     materialData.material_url || null,
   ];
 
@@ -27,6 +30,7 @@ async function createMaterial(materialData) {
   return rows;
 }
 
+// GET MATERIAL BY ID
 async function getMaterialById(materialID) {
   const [rows] = await db.query(
     "SELECT * FROM material WHERE material_id = ?",
@@ -35,6 +39,7 @@ async function getMaterialById(materialID) {
   return rows.length ? rows[0] : null;
 }
 
+// GET ALL MATERIALS BY USER
 async function getAllMaterialByUserId(user_id) {
   const [rows] = await db.query("SELECT * FROM material WHERE user_id = ?", [
     user_id,
@@ -42,12 +47,14 @@ async function getAllMaterialByUserId(user_id) {
   return rows;
 }
 
+// UPDATE MATERIAL
 async function updateMaterial(materialID, updatedData) {
   const sql = `
     UPDATE material 
     SET material_title = ?, 
         material_type = ?, 
         material_doc = ?, 
+        original_name = ?, 
         material_url = ?
     WHERE material_id = ?
   `;
@@ -55,7 +62,8 @@ async function updateMaterial(materialID, updatedData) {
   const values = [
     updatedData.material_title,
     updatedData.material_type,
-    updatedData.material_doc || null,
+    updatedData.material_doc || null, // stored filename
+    updatedData.original_name || null, // original filename
     updatedData.material_url || null,
     materialID,
   ];
@@ -64,6 +72,7 @@ async function updateMaterial(materialID, updatedData) {
   return rows;
 }
 
+// DELETE MATERIAL
 async function deleteMaterial(id, returnBeforeDelete = false) {
   const [rows] = await db.query(
     "SELECT * FROM material WHERE material_id = ?",

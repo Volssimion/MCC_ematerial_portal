@@ -43,6 +43,7 @@ async function editMaterial(req, res) {
     if (material_type === "link") {
       updatedData.material_url = material_url;
       updatedData.material_doc = null;
+      updatedData.original_name = null;
 
       // Delete old file if exists
       if (existing.material_doc) {
@@ -66,7 +67,9 @@ async function editMaterial(req, res) {
         );
         if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       }
-      updatedData.material_doc = req.file.filename; // store only filename
+
+      updatedData.material_doc = req.file.filename; // server filename
+      updatedData.original_name = req.body.original_name; // original filename from user
       updatedData.material_url = null;
     }
 
@@ -77,4 +80,5 @@ async function editMaterial(req, res) {
     res.status(500).json({ message: "Failed to update material" });
   }
 }
+
 module.exports = { fetchMaterialById, editMaterial };

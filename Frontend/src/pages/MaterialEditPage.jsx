@@ -14,6 +14,7 @@ export default function MaterialEditForm() {
   const [materialLink, setMaterialLink] = useState("");
   const [materialFile, setMaterialFile] = useState(null);
   const [existingFile, setExistingFile] = useState(null);
+  const [originalName, setOriginalName] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function MaterialEditForm() {
         setMaterialType(data.material_type);
         setMaterialLink(data.material_url || "");
         setExistingFile(data.material_doc || null);
+        setOriginalName(data.original_name || "");
       } catch (err) {
         console.error(err);
         setError("Failed to fetch material details.");
@@ -53,9 +55,15 @@ export default function MaterialEditForm() {
     const formData = new FormData();
     formData.append("material_title", materialTitle);
     formData.append("material_type", materialType);
+
     if (materialType === "link") formData.append("material_url", materialLink);
-    if (materialType === "doc" && materialFile)
-      formData.append("material_doc", materialFile);
+
+    if (materialType === "doc") {
+      if (materialFile) {
+        formData.append("material_doc", materialFile);
+        formData.append("original_name", materialFile.name);
+      }
+    }
 
     try {
       await axios.put(
@@ -74,7 +82,7 @@ export default function MaterialEditForm() {
         timer: 2000,
       });
 
-      setTimeout(() => navigate(-1), 2000); // wait before going back
+      setTimeout(() => navigate(-1), 2000);
     } catch (err) {
       console.error(err);
       Swal.fire({
@@ -163,8 +171,13 @@ export default function MaterialEditForm() {
                     {existingFile && !materialFile && (
                       <p className="mt-2">
                         Current File:{" "}
-                        <a href={existingFile} target="_blank" rel="noreferrer">
-                          View Document
+                        <a
+                          href={existingFile}
+                          target="_blank"
+                          rel="noreferrer"
+                          download={originalName || undefined}
+                        >
+                          {originalName || "View Document"}
                         </a>
                       </p>
                     )}

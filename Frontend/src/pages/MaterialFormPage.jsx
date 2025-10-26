@@ -1,13 +1,14 @@
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 import Swal from "sweetalert2";
 
 export default function MaterialForm() {
   const location = useLocation();
   const { userID, courseID } = location.state;
+  const navigate = useNavigate();
 
   const [materialTitle, setMaterialTitle] = useState("");
   const [materialType, setMaterialType] = useState("");
@@ -56,7 +57,7 @@ export default function MaterialForm() {
         showConfirmButton: false,
         timer: 2000,
       });
-
+      setTimeout(() => navigate(-1), 2000);
       // Reset form
       setMaterialTitle("");
       setMaterialType("");

@@ -1,16 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 import programData from "../utils/programData";
 import Swal from "sweetalert2";
 
 export default function Courseform() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const user_id = location.state;
   const [stream, setStream] = useState("");
   const [degree, setDegree] = useState("");
   const [courseData, setCourseData] = useState({
     course_id: "",
     course_title: "",
-    user_id: 2401722037046,
+    user_id: user_id,
     program_id: "",
     year: 0,
     sem: 0,
@@ -53,15 +57,8 @@ export default function Courseform() {
           text: "Your Course has been Created successfully.",
           showConfirmButton: false,
           timer: 2000,
-        });
-        setCourseData({
-          course_id: "",
-          course_title: "",
-          user_id: 2401722037046,
-          program_id: "",
-          year: 0,
-          sem: 0,
-          batch: "",
+        }).then(() => {
+          navigate(-1);
         });
       })
       .catch((err) => {
@@ -116,7 +113,7 @@ export default function Courseform() {
                         setCourseData({
                           course_id: "",
                           course_title: "",
-                          user_id: 2401722037046,
+                          user_id: user_id,
                           program_id: "",
                           year: 0,
                           sem: 0,
@@ -139,7 +136,7 @@ export default function Courseform() {
                         setCourseData({
                           course_id: "",
                           course_title: "",
-                          user_id: 2401722037046,
+                          user_id: user_id,
                           program_id: "",
                           year: 0,
                           sem: 0,

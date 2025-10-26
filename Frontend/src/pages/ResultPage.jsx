@@ -20,9 +20,7 @@ export default function Resultpage() {
           const data = Array.isArray(res.data) ? res.data : [res.data];
 
           const updatedData = data.map((m) => {
-            if (m.material_doc) {
-              m.material_doc = `http://localhost:5000/uploads/${m.material_doc}`;
-            }
+            // Keep backend file info, no changes here
             return m;
           });
 
@@ -41,32 +39,33 @@ export default function Resultpage() {
       <Navbar />
       <div className="custom-container">
         <div
-          className="card vh-100 m-3 p-4 rounded-4  "
+          className="card vh-100 m-3 p-4 rounded-4"
           style={{ backgroundColor: "#D2EAC6" }}
         >
           <h5>Materials</h5>
           <div className="row mt-4 align-items-center">
-            <div className="offset-col-md-1 col-md-10 mx-auto text-start ">
-              <h5 className="fs-5 fs-md-1 " style={{ color: "#78091E" }}>
+            <div className="offset-col-md-1 col-md-10 mx-auto text-start">
+              <h5 className="fs-5 fs-md-1" style={{ color: "#78091E" }}>
                 {courseTitle} ({courseID})
               </h5>
+
               {loading && (
                 <p className="text-center text-primary">Loading materials...</p>
               )}
               {error && <p className="text-danger">{error}</p>}
               {!loading && !error && materials.length === 0 ? (
-                <p className="text-center text-danger mt-5  fs-5">
+                <p className="text-center text-danger mt-5 fs-5">
                   No Materials found for the selected Course.
                 </p>
               ) : (
                 <ul
-                  className="mt-3 overflow-auto "
+                  className="mt-3 overflow-auto"
                   style={{ listStyleType: "none", maxHeight: "65vh" }}
                 >
                   <li className="p-3 sticky-top">
                     <div className="row">
                       <div
-                        className="col-md-2 p-2  text-center  border border-white"
+                        className="col-md-2 p-2 text-center border border-white"
                         style={{
                           fontWeight: 600,
                           fontSize: "18px",
@@ -77,7 +76,7 @@ export default function Resultpage() {
                         Material Type
                       </div>
                       <div
-                        className="col-md-5  p-2  text-center  border border-white"
+                        className="col-md-5 p-2 text-center border border-white"
                         style={{
                           fontWeight: 600,
                           fontSize: "18px",
@@ -88,7 +87,7 @@ export default function Resultpage() {
                         Material Title
                       </div>
                       <div
-                        className="col-md-3 p-2  text-center border border-white"
+                        className="col-md-3 p-2 text-center border border-white"
                         style={{
                           fontWeight: 600,
                           fontSize: "18px",
@@ -99,7 +98,7 @@ export default function Resultpage() {
                         Operations
                       </div>
                       <div
-                        className="col-md-2 p-2  text-center  border border-white"
+                        className="col-md-2 p-2 text-center border border-white"
                         style={{
                           fontWeight: 600,
                           fontSize: "18px",
@@ -111,6 +110,7 @@ export default function Resultpage() {
                       </div>
                     </div>
                   </li>
+
                   {materials.map((m) => (
                     <li className="p-3" key={m.material_id}>
                       <div className="row">
@@ -121,12 +121,12 @@ export default function Resultpage() {
                           {m.material_type}
                         </div>
                         <div
-                          className="col-md-5 p-2  bg-black bg-opacity-25 border border-black"
+                          className="col-md-5 p-2 bg-black bg-opacity-25 border border-black"
                           style={{ color: "#78091E", fontSize: "18px" }}
                         >
                           {m.material_title}
                         </div>
-                        <div className="col-md-3 p-2 bg-black bg-opacity-25 border border-black">
+                        <div className="col-md-3 p-2 bg-black bg-opacity-25 border border-black text-center">
                           {m.material_type === "link" ? (
                             <button
                               className="btn btn-sm btn-primary rounded-5 me-3"
@@ -142,18 +142,14 @@ export default function Resultpage() {
                               Visit
                             </button>
                           ) : (
-                            <>
-                              <a
-                                href={m.material_doc}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                download
-                                className="btn btn-sm btn-danger rounded-5"
-                                style={{ fontSize: 13 }}
-                              >
-                                Download
-                              </a>
-                            </>
+                            <a
+                              href={`http://localhost:5000/staff/downloadMaterial/${m.material_id}`}
+                              className="btn btn-sm btn-danger rounded-5"
+                              style={{ fontSize: 13 }}
+                              download
+                            >
+                              Download
+                            </a>
                           )}
                         </div>
                         <div

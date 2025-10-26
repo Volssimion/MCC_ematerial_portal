@@ -7,8 +7,9 @@ const storage = multer.diskStorage({
     cb(null, "uploads/"); // folder to save files
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
+    // Prepend timestamp to original name to avoid collisions
+    const uniquePrefix = Date.now() + "-";
+    cb(null, uniquePrefix + file.originalname);
   },
 });
 
@@ -26,7 +27,15 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB limit
 });
 
-module.exports = upload;
+// Middleware to attach original name to request body
+const attachOriginalName = (req, res, next) => {
+  if (req.file) {
+    req.body.original_name = req.file.originalname; // send original name to controller
+  }
+  next();
+};
+
+module.exports = { upload, attachOriginalName };
